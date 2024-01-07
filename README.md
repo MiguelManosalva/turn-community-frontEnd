@@ -1,46 +1,69 @@
-# Getting Started with Create React App
+<p align="center">
+  <a href="https://reactjs.org/" target="blank"><img src="https://reactjs.org/logo-og.png" width="200" alt="Logo de React" /></a>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <strong>Aplicación de Gestión de Turnos para Comunidades - Frontend</strong><br>
+  Construida con <a href="https://reactjs.org/" target="_blank">React</a>, una biblioteca de JavaScript para construir interfaces de usuario.
+</p>
 
-## Available Scripts
+## Descripción
 
-In the project directory, you can run:
+Este proyecto representa la parte frontend de la aplicación de gestión de turnos para comunidades de vecinos. Está desarrollado utilizando [React](https://reactjs.org/), una poderosa biblioteca de JavaScript para crear interfaces de usuario de manera eficiente y con una óptima experiencia de usuario.
 
-### `npm start`
+Características principales:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Interfaz intuitiva y fácil de usar.
+- Visualización de turnos para vecinos y administradores.
+- Sistema de notificaciones para recordatorios de turnos.
+- Integración segura con el backend de gestión de turnos.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Preinstalación de PNPM
 
-### `npm test`
+Antes de instalar las dependencias y ejecutar la aplicación, es crucial tener instalado [PNPM](https://pnpm.io/), un gestor de paquetes rápido, eficiente y que ahorra espacio en disco comparado con `npm`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ¿Por qué PNPM?
 
-### `npm run build`
+- **Eficiencia en el Espacio:** PNPM crea un almacén único para todos los módulos y enlaza los módulos necesarios en el `node_modules` de tu proyecto. Esto significa que se duplican menos archivos y se ahorra espacio en disco.
+- **Rapidez:** Al utilizar enlaces simbólicos y evitar redundancias, PNPM puede instalar paquetes mucho más rápido que `npm`.
+- **Seguridad:** PNPM mantiene la estructura de dependencias plana, lo que evita la sobrecarga de paquetes no deseados y mejora la seguridad del proyecto.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Instalación de PNPM
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Para instalar PNPM, puedes usar el siguiente comando:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+$ npm install -g pnpm
+```
 
-### `npm run eject`
+## Instalación
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+$ pnpm install
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Ejecutando la Aplicación
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+# Desarrollo
+$ pnpm run start
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# Modo observación
+$ pnpm run start:dev
 
-## Learn More
+# Modo producción
+$ pnpm run start:prod
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Pruebas
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+# Pruebas unitarias
+$ pnpm run test
+
+# Pruebas e2e
+$ pnpm run test:e2e
+
+# Cobertura de pruebas
+$ pnpm run test:cov
+```
