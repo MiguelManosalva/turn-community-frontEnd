@@ -4,17 +4,15 @@ import { useLocation } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import Sidenav from "../Sidebar/Sidebar";
-// import Sidenav from "./Sidenav";
 
 const { Header: AntHeader, Content, Sider } = Layout;
 
-// Si tu componente recibe props, define aquí sus tipos
 interface MainProps {
-  children: React.ReactNode; // Asumiendo que children es del tipo ReactNode
+  children: React.ReactNode;
 }
 
 const Main: React.FC<MainProps> = ({ children }) => {
-  const [sidenavType, setSidenavType] = useState("transparent");
+  const [sidenavType] = useState("transparent");
 
   const [visible, setVisible] = useState(false);
 
@@ -22,18 +20,6 @@ const Main: React.FC<MainProps> = ({ children }) => {
 
   let { pathname } = useLocation();
   pathname = pathname.replace("/", "");
-
-  // useEffect(() => {
-  //   if (pathname === "rtl") {
-  //     setPlacement("left");
-  //   } else {
-  //     setPlacement("right");
-  //   }
-  // }, [pathname]);
-
-  // ${
-  //   pathname === "profile" ? "layout-profile" : ""
-  // } ${pathname === "rtl" ? "layout-dashboard-rtl" : ""}
 
   return (
     <Layout className={`layout-dashboard rtl`}>

@@ -86,6 +86,7 @@ const ShiftForm: React.FC<HouseFormProps> = ({
         placement: "topRight",
       });
       handleSubmit();
+      form.resetFields();
     }
 
     setIsLoading(false);

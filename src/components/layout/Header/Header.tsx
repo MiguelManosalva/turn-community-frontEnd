@@ -1,59 +1,6 @@
-import {
-  ClockCircleOutlined,
-  CreditCardOutlined,
-  WifiOutlined,
-} from "@ant-design/icons";
-import { Avatar, Breadcrumb, Col, List, Row } from "antd";
+import { Breadcrumb, Col, Row } from "antd";
 import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-
-const data = [
-  {
-    title: "New message from Sophie",
-    description: (
-      <>
-        <ClockCircleOutlined /> 2 days ago
-      </>
-    ),
-    // avatar: avatar,
-  },
-  {
-    title: "New album by Travis Scott",
-    description: (
-      <>
-        <ClockCircleOutlined /> 2 days ago
-      </>
-    ),
-    avatar: <Avatar shape="square" icon={<WifiOutlined />} />,
-  },
-  {
-    title: "Payment completed",
-    description: (
-      <>
-        <ClockCircleOutlined /> 2 days ago
-      </>
-    ),
-    avatar: <Avatar shape="square" icon={<CreditCardOutlined />} />,
-  },
-];
-
-const menu = (
-  <List
-    min-width="100%"
-    className="header-notifications-dropdown"
-    itemLayout="horizontal"
-    dataSource={data}
-    renderItem={(item) => (
-      <List.Item>
-        <List.Item.Meta
-          avatar={<Avatar shape="square" src={item.avatar} />}
-          title={item.title}
-          description={item.description}
-        />
-      </List.Item>
-    )}
-  />
-);
 
 interface HeaderProps {
   placement?: "left" | "right";
@@ -65,15 +12,7 @@ interface HeaderProps {
   handleFixedNavbar?: (fixed: boolean) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  placement,
-  name,
-  subName,
-  onPress,
-  handleSidenavColor,
-  handleSidenavType,
-  handleFixedNavbar,
-}) => {
+const Header: React.FC<HeaderProps> = ({ name, subName }) => {
   useEffect(() => window.scrollTo(0, 0));
 
   return (
@@ -95,29 +34,6 @@ const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
         </Col>
-        {/* <Col span={12} md={12} className="header-control">
-          <Badge size="small" count={4}>
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <a
-                href="#pablo"
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                <BellOutlined key={0} style={{ fontSize: "20px" }} />
-              </a>
-            </Dropdown>
-          </Badge>
-
-          <Link to="/sign-in" className="btn-sign-in">
-            <UserOutlined key={0} />
-            <span>Sign in</span>
-          </Link>
-          <Input
-            className="header-search"
-            placeholder="Type here..."
-            prefix={<SearchOutlined />}
-          />
-        </Col> */}
       </Row>
     </>
   );

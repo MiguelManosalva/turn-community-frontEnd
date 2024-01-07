@@ -1,4 +1,4 @@
-import { Calendar, Card, Typography } from "antd";
+import { Calendar, Card } from "antd";
 import { PickerLocale } from "antd/lib/date-picker/generatePicker";
 import esES from "antd/lib/locale/es_ES";
 import dayjs, { Dayjs } from "dayjs";
@@ -10,8 +10,6 @@ import React from "react";
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 dayjs.locale("es");
-
-const { Title } = Typography;
 
 interface ShiftCalendarProps {
   startDate: string;
