@@ -1,23 +1,22 @@
-import { Card, Col, Row, Statistic } from "antd";
+import { Card, Col, Row, Spin, Statistic } from "antd";
 import { useEffect, useState } from "react";
 import { WiCloudy, WiDaySunny, WiFog, WiRain, WiSnow } from "react-icons/wi";
 import { WeatherDto } from "../../../models/dto/weatherDto";
+import { getWeather } from "../../../services/stadisticsService";
 
 const WeatherWidget = () => {
   const [weatherData, setWeatherData] = useState<WeatherDto | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result: WeatherDto = {
-        temperature: 26.95,
-        temperatureMin: 25.53,
-        temperatureMax: 29.22,
-        humidity: 38,
-        weather: "clear sky",
-        precipitation: "no",
-      };
+      const result = await getWeather();
 
-      setWeatherData(result);
+      if ("temperature" in result) {
+        setWeatherData(result);
+      } else {
+        setError(result.message);
+      }
     };
 
     fetchData();
@@ -58,45 +57,47 @@ const WeatherWidget = () => {
   };
 
   return (
-    <Card title="Clima Puente Alto, Chile" style={{ height: 400 }}>
-      {weatherData && (
-        <Row gutter={[16, 16]}>
-          <Col xs={24} sm={12} md={12} lg={6}>
-            <Statistic
-              title="Temperatura"
-              value={weatherData.temperature}
-              suffix="°C"
-            />
-          </Col>
-          <Col xs={24} sm={12} md={12} lg={6}>
-            <Statistic
-              title="Humedad"
-              value={weatherData.humidity}
-              suffix="%"
-            />
-          </Col>
-          <Col xs={24} sm={12} md={12} lg={6}>
-            <Statistic
-              title="Temp. Mínima"
-              value={weatherData.temperatureMin}
-              suffix="°C"
-            />
-          </Col>
-          <Col xs={24} sm={12} md={12} lg={6}>
-            <Statistic
-              title="Temp. Máxima"
-              value={weatherData.temperatureMax}
-              suffix="°C"
-            />
-          </Col>
-          <Col xs={24} style={{ textAlign: "center" }}>
-            {getWeatherIcon(weatherData.weather)}
-            <p>Estado: {getWeatherName(weatherData.weather)}</p>
-            <p>Precipitación: {weatherData.precipitation}</p>
-          </Col>
-        </Row>
-      )}
-    </Card>
+    <Spin spinning={!weatherData && !error}>
+      <Card title="Clima Puente Alto, Chile" style={{ height: 400 }}>
+        {weatherData && (
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={12} md={12} lg={6}>
+              <Statistic
+                title="Temperatura"
+                value={weatherData.temperature}
+                suffix="°C"
+              />
+            </Col>
+            <Col xs={24} sm={12} md={12} lg={6}>
+              <Statistic
+                title="Humedad"
+                value={weatherData.humidity}
+                suffix="%"
+              />
+            </Col>
+            <Col xs={24} sm={12} md={12} lg={6}>
+              <Statistic
+                title="Temp. Mínima"
+                value={weatherData.temperatureMin}
+                suffix="°C"
+              />
+            </Col>
+            <Col xs={24} sm={12} md={12} lg={6}>
+              <Statistic
+                title="Temp. Máxima"
+                value={weatherData.temperatureMax}
+                suffix="°C"
+              />
+            </Col>
+            <Col xs={24} style={{ textAlign: "center" }}>
+              {getWeatherIcon(weatherData.weather)}
+              <p>Estado: {getWeatherName(weatherData.weather)}</p>
+              <p>Precipitación: {weatherData.precipitation}</p>
+            </Col>
+          </Row>
+        )}
+      </Card>
+    </Spin>
   );
 };
 
