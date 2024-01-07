@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import {
   ClockCircleOutlined,
   HomeOutlined,
-  MenuUnfoldOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
 import {
@@ -264,9 +263,9 @@ function Dashboard() {
         <Col xs={24} sm={24} md={12} lg={12} xl={8} className="mb-24">
           <Card bordered={false} className="criclebox h-full">
             <div className="timeline-box">
-              <Title level={5}>Orders History</Title>
+              <Title level={5}>Notificaciones</Title>
               <Paragraph className="lastweek" style={{ marginBottom: 24 }}>
-                this month <span className="bnb2">20%</span>
+                Aquí encontrarás las notificaciones de la comunidad de vecinos.
               </Paragraph>
 
               <Timeline
@@ -281,9 +280,6 @@ function Dashboard() {
                   </Timeline.Item>
                 ))}
               </Timeline>
-              <Button type="primary" className="width-100" onClick={() => null}>
-                {<MenuUnfoldOutlined />} REVERSE
-              </Button>
             </div>
           </Card>
         </Col>

@@ -1,4 +1,4 @@
-import { Progress, Tooltip } from "antd";
+import { Avatar, Progress, Tooltip } from "antd";
 import { formatDate } from "../../utils/date/dateUtil";
 import { ShiftDto } from "../dto/shiftDto";
 
@@ -12,21 +12,45 @@ export const shiftListMapper = (data: ShiftDto[] | null) => {
       status: shift.estado,
       progress: <Progress percent={60} size="small" />,
       member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            {/* <img className="tootip-img" src={team1} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            {/* <img className="tootip-img" src={team2} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Alexander Smith">
-            {/* <img className="tootip-img" src={team3} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Jessica Doe">
-            {/* <img className="tootip-img" src={team4} alt="" /> */}
-          </Tooltip>
-        </div>
+        <Avatar.Group size="large">
+          {shift.casa.usuarios &&
+            shift.casa.usuarios.map((d, index) => (
+              <Tooltip
+                placement="bottom"
+                title={`${d.nombre} - Teléfono: ${d.telefono}`}
+              >
+                <Avatar
+                  style={{ backgroundColor: colorByStatus(shift.estado) }}
+                >
+                  {twoFirstLetters(d.nombre)}
+                </Avatar>
+              </Tooltip>
+            ))}
+        </Avatar.Group>
       ),
     };
   });
+};
+
+const twoFirstLetters = (name: string) => {
+  if (!name) return "";
+  const splittedName = name.split(" ");
+  const firstLetter = splittedName[0].charAt(0);
+  const secondLetter = splittedName.length > 1 ? splittedName[1].charAt(0) : "";
+  return firstLetter + secondLetter;
+};
+
+const colorByStatus = (status: string) => {
+  switch (status) {
+    case "completado":
+      return "#87d068";
+    case "pendiente":
+      return "#f1c40f";
+    default:
+      return "#1677ff";
+  }
+};
+
+const handleAction = (data: any) => {
+  // Add your action logic here
 };

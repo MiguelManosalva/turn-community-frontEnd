@@ -1,5 +1,5 @@
 import { HomeTwoTone } from "@ant-design/icons";
-import { Card, Radio, Spin, Typography } from "antd";
+import { Badge, Card, Radio, Spin, Typography } from "antd";
 import { CSSProperties, useEffect, useState } from "react";
 import { ShiftDto } from "../../../models/dto/shiftDto";
 import { shiftListMapper } from "../../../models/mappers/shiftMapper";
@@ -16,7 +16,8 @@ const ShiftTable = () => {
   const { Title, Paragraph } = Typography;
 
   const [shiftList, setShiftList] = useState<ShiftDto[] | null>(null);
-
+  const [mappedShiftList, setMappedShiftList] = useState<any[]>([]);
+  const [typeShift, seTypeShift] = useState<string>("todos");
   const [error, setError] = useState<string | null>(null);
 
   const getShiftListFetch = async () => {
@@ -24,6 +25,7 @@ const ShiftTable = () => {
 
     if (Array.isArray(result)) {
       setShiftList(result);
+      setMappedShiftList(shiftListMapper(result));
     } else {
       setError(result.message);
     }
@@ -34,10 +36,16 @@ const ShiftTable = () => {
   }, [shiftList]);
 
   const onChange = (e: any): void => {
+    seTypeShift(e.target.value);
+    if (e.target.value === "todos") {
+      setMappedShiftList(shiftListMapper(shiftList));
+    } else {
+      const filteredShiftList: ShiftDto[] =
+        shiftList?.filter((d) => d.estado === e.target.value) ?? [];
+      setMappedShiftList(shiftListMapper(filteredShiftList));
+    }
     return console.log(`radio checked:${e.target.value}`);
   };
-
-  const mappedShiftList = shiftListMapper(shiftList);
 
   return (
     <Spin spinning={!shiftList && !error}>
@@ -46,15 +54,17 @@ const ShiftTable = () => {
           <div>
             <Title level={5}>Turnos </Title>
             <Paragraph className="lastweek">
-              done this month<span className="blue">40%</span>
+              Este es el listado de turnos asignados a las casas de la comunidad
+              de vecinos.
             </Paragraph>
           </div>
           <div className="ant-filtertabs">
             <div className="antd-pro-pages-dashboard-analysis-style-salesExtra">
-              <Radio.Group onChange={onChange} defaultValue="a">
-                <Radio.Button value="a">TODOS</Radio.Button>
-                <Radio.Button value="b">COMPLETADOS</Radio.Button>
-                <Radio.Button value="c">NO COMPLETADOS</Radio.Button>
+              <Radio.Group onChange={onChange} defaultValue={typeShift}>
+                <Radio.Button value="todos">TODOS</Radio.Button>
+                <Radio.Button value="asignado">ASIGNADOS</Radio.Button>
+                <Radio.Button value="completado">COMPLETADOS</Radio.Button>
+                <Radio.Button value="pendiente">PENDIENTES</Radio.Button>
               </Radio.Group>
             </div>
           </div>
@@ -67,6 +77,7 @@ const ShiftTable = () => {
                 <th>ENCARGADOS</th>
                 <th>FECHA DE INICIO</th>
                 <th>FECHA DE TERMINO</th>
+                <th>ESTADO</th>
               </tr>
             </thead>
             <tbody>
@@ -76,7 +87,9 @@ const ShiftTable = () => {
                     <td>
                       <h6>
                         <HomeTwoTone
-                          twoToneColor="#52c41a"
+                          twoToneColor={
+                            d.status === "asignado" ? "#2ecc71" : "#95a5a6"
+                          }
                           className="mr-10"
                           style={{ fontSize: "24px" }}
                         />
@@ -91,8 +104,16 @@ const ShiftTable = () => {
                     </td>
                     <td>{d.endDate} </td>
                     <td>
-                      <span>{d.status}</span>
-                      <div className="percent-progress">{d.progress}</div>
+                      {" "}
+                      <Badge
+                        status={
+                          d.status === "completado" ? "success" : "default"
+                        }
+                        text={
+                          d.status.charAt(0).toUpperCase() +
+                          d.status.slice(1).toLowerCase()
+                        }
+                      />
                     </td>
                   </tr>
                 ))
