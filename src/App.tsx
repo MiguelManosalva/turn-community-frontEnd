@@ -15,6 +15,7 @@ import House from "./pages/House/House";
 import Login from "./pages/Session/Login/Login";
 import Register from "./pages/Session/Register/Register";
 import Shift from "./pages/Shift/Shift";
+import User from "./pages/Usuario/Usuario";
 
 moment.locale("es");
 
@@ -81,6 +82,14 @@ function App() {
           element={
             <PrivateRoute>
               <Main children={<Shift />} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/usuarios"
+          element={
+            <PrivateRoute>
+              <Main children={<User />} />
             </PrivateRoute>
           }
         />

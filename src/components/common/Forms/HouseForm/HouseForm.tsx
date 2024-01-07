@@ -18,6 +18,8 @@ const HouseForm: React.FC<HouseFormProps> = ({
   useEffect(() => {
     if (editingHouse) {
       form.setFieldsValue(editingHouse);
+    } else {
+      form.resetFields();
     }
   }, [editingHouse, form]);
 
@@ -44,6 +46,7 @@ const HouseForm: React.FC<HouseFormProps> = ({
         message: `Casa ${editingHouse ? "Actualizada" : "Creada"} Exitosamente`,
         placement: "topRight",
       });
+      form.resetFields();
       handleSubmit();
     }
 

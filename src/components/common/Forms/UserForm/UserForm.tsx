@@ -1,14 +1,21 @@
 import { Button, Form, Input, Select, Spin, notification } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RegisterDto } from "../../../../models/dto/registerDto";
 import { House } from "../../../../models/house";
+import { User } from "../../../../models/user";
 import { getAllHouses } from "../../../../services/houseService";
-import { createUser } from "../../../../services/userService";
+import { createUser, updateUser } from "../../../../services/userService";
 
 const { Option } = Select;
 
-const UserForm = ({ handleSubmit }: { handleSubmit: Function }) => {
+interface UserFormProps {
+  handleSubmit: Function;
+  editingUser?: User | null;
+}
+
+const UserForm: React.FC<UserFormProps> = ({ handleSubmit, editingUser }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [form] = Form.useForm();
   const [houses, setHouses] = useState<House[]>([]);
 
   const getHouses = async () => {
@@ -19,6 +26,22 @@ const UserForm = ({ handleSubmit }: { handleSubmit: Function }) => {
       setHouses(response);
     }
   };
+
+  useEffect(() => {
+    if (editingUser) {
+      console.log(editingUser);
+
+      form.setFieldsValue({
+        name: editingUser.nombre,
+        email: editingUser.correoElectronico,
+        house: editingUser?.casa?.id,
+        rol: editingUser.rol,
+        phone: formatNumber(editingUser.telefono),
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [editingUser, form]);
 
   useMemo(() => {
     getHouses();
@@ -36,7 +59,9 @@ const UserForm = ({ handleSubmit }: { handleSubmit: Function }) => {
       telefono: "+569" + values.phone,
     };
 
-    const result = await createUser(register);
+    const result = editingUser
+      ? await updateUser(editingUser.id ?? 0, register)
+      : await createUser(register);
 
     if (result && "statusCode" in result) {
       notification.error({
@@ -51,15 +76,27 @@ const UserForm = ({ handleSubmit }: { handleSubmit: Function }) => {
         placement: "topRight",
       });
       handleSubmit();
+      form.resetFields();
     }
 
     setIsLoading(false);
+  };
+
+  const formatNumber = (value: string | null) => {
+    if (value) {
+      value = value.replace("+569", "");
+    } else {
+      value = "";
+    }
+
+    return value.trim();
   };
 
   return (
     <Spin spinning={isLoading}>
       <Form
         name="basic"
+        form={form}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         className="row-col"
@@ -157,7 +194,7 @@ const UserForm = ({ handleSubmit }: { handleSubmit: Function }) => {
 
         <Form.Item>
           <Button style={{ width: "100%" }} type="primary" htmlType="submit">
-            Crear Usuario
+            {editingUser ? "Actualizar Usuario" : "Crear Usuario"}
           </Button>
         </Form.Item>
       </Form>

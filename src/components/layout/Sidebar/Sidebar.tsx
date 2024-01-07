@@ -82,16 +82,16 @@ const Sidenav = ({ color }: { color: string }) => {
         </Menu.Item>
 
         <Menu.Item key="6">
-          <NavLink to="/profile">
+          <NavLink to="/usuarios">
             <span
               className="icon"
               style={{
-                background: page === "profile" ? color : "",
+                background: page === "usuarios" ? color : "",
               }}
             >
               {profile}
             </span>
-            <span className="label">Perfil</span>
+            <span className="label">Usuarios</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="7">

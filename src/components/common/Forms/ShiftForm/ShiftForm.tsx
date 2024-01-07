@@ -38,6 +38,8 @@ const ShiftForm: React.FC<HouseFormProps> = ({
         house: editingShift.casa.id,
         estado: editingShift.estado,
       });
+    } else {
+      form.resetFields();
     }
   }, [editingShift, form]);
 
