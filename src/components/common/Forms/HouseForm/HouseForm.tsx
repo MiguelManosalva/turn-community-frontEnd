@@ -1,9 +1,25 @@
 import { Button, Form, Input, Spin, notification } from "antd";
-import { useState } from "react";
-import { createHouse } from "../../../../services/houseService";
+import React, { useEffect, useState } from "react";
+import { House } from "../../../../models/house";
+import { createHouse, updateHouse } from "../../../../services/houseService";
 
-const HouseForm = ({ handleSubmit }: { handleSubmit: Function }) => {
+interface HouseFormProps {
+  handleSubmit: Function;
+  editingHouse?: House | null;
+}
+
+const HouseForm: React.FC<HouseFormProps> = ({
+  handleSubmit,
+  editingHouse,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (editingHouse) {
+      form.setFieldsValue(editingHouse);
+    }
+  }, [editingHouse, form]);
 
   const onFinish = async (values: any) => {
     setIsLoading(true);
@@ -13,17 +29,19 @@ const HouseForm = ({ handleSubmit }: { handleSubmit: Function }) => {
       descripcion: values.descripcion,
     };
 
-    const result = await createHouse(houseData);
+    const result = editingHouse
+      ? await updateHouse(editingHouse.id ?? 0, houseData)
+      : await createHouse(houseData);
+
     if (result && "statusCode" in result) {
       notification.error({
-        message: "Error en la Creación",
-        description: "Ocurrió un error al crear la casa",
+        message: `Error en la ${editingHouse ? "Actualización" : "Creación"}`,
+        description: "Ocurrió un error al procesar la casa",
         placement: "topRight",
       });
     } else {
       notification.success({
-        message: "Creación Exitosa",
-        description: "Casa creada con éxito",
+        message: `Casa ${editingHouse ? "Actualizada" : "Creada"} Exitosamente`,
         placement: "topRight",
       });
       handleSubmit();
@@ -36,6 +54,7 @@ const HouseForm = ({ handleSubmit }: { handleSubmit: Function }) => {
     <Spin spinning={isLoading}>
       <Form
         name="houseForm"
+        form={form}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         className="row-col"
@@ -66,7 +85,7 @@ const HouseForm = ({ handleSubmit }: { handleSubmit: Function }) => {
 
         <Form.Item>
           <Button style={{ width: "100%" }} type="primary" htmlType="submit">
-            Crear Casa
+            {editingHouse ? "Actualizar Casa" : "Crear Casa"}
           </Button>
         </Form.Item>
       </Form>

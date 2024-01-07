@@ -40,10 +40,21 @@ export const updateHouse = async (
   houseData: Partial<House>
 ): Promise<House | ApiResponse> => {
   try {
-    const response = await apiService.put<House>(
+    const response = await apiService.patch<House>(
       `${endpoint}/${id}`,
       houseData
     );
+    return response.data;
+  } catch (error: any) {
+    return handleError(error);
+  }
+};
+
+export const deleteHouse = async (
+  id: number
+): Promise<ApiResponse | unknown> => {
+  try {
+    const response = await apiService.delete(`${endpoint}/${id}`);
     return response.data;
   } catch (error: any) {
     return handleError(error);

@@ -1,9 +1,15 @@
-import { HomeTwoTone } from "@ant-design/icons";
-import { Badge, Card, Radio, Spin, Typography } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  HomeTwoTone,
+  PlusOutlined,
+} from "@ant-design/icons";
+import { Badge, Button, Card, Modal, Radio, Spin, Typography } from "antd";
 import { CSSProperties, useEffect, useState } from "react";
 import { ShiftDto } from "../../../models/dto/shiftDto";
 import { shiftListMapper } from "../../../models/mappers/shiftMapper";
-import { getShiftList } from "../../../services/shiftService";
+import { deleteShift, getShiftList } from "../../../services/shiftService";
+import ShiftForm from "../Forms/ShiftForm/ShiftForm";
 
 const emptyMessageStyle: CSSProperties = {
   textAlign: "center",
@@ -19,6 +25,9 @@ const ShiftTable = () => {
   const [mappedShiftList, setMappedShiftList] = useState<any[]>([]);
   const [typeShift, seTypeShift] = useState<string>("todos");
   const [error, setError] = useState<string | null>(null);
+  const [showShiftModal, setShowShiftModal] = useState<boolean>(false);
+  const [currentShift, setCurrentShift] = useState<ShiftDto | null>(null);
+  const [typeForm, setTypeForm] = useState<string | null>(null);
 
   const getShiftListFetch = async () => {
     const result = await getShiftList();
@@ -47,6 +56,49 @@ const ShiftTable = () => {
     return console.log(`radio checked:${e.target.value}`);
   };
 
+  const handleNewShift = () => {
+    setCurrentShift(null);
+    setShowShiftModal(true);
+    setTypeForm("new");
+  };
+
+  const handleEditShift = (shiftId: number) => {
+    const shiftToEdit =
+      shiftList?.find((shift: ShiftDto) => shift.id === shiftId) ?? null;
+    setCurrentShift(shiftToEdit);
+    setShowShiftModal(true);
+    setTypeForm("update");
+    getShiftListFetch();
+  };
+
+  const confirmDelete = (houseId: number) => {
+    Modal.confirm({
+      title: "¿Estás seguro de que quieres eliminar este turno?",
+      content:
+        "Esta acción es irreversible y eliminará todos los datos relacionados con el turno.",
+      okText: "Sí, eliminar",
+      okType: "danger",
+      cancelText: "No, cancelar",
+      async onOk() {
+        await deleteShift(houseId);
+        await getShiftListFetch();
+      },
+    });
+  };
+
+  const handleSubmit = () => {
+    console.log("handleSubmit");
+
+    setShowShiftModal(false);
+    getShiftListFetch();
+  };
+
+  const titleForm = () => {
+    if (typeForm === "new") return "Crear Turno";
+    if (typeForm === "update") return "Actualizar Turno";
+    return "";
+  };
+
   return (
     <Spin spinning={!shiftList && !error}>
       <Card bordered={false} className="criclebox cardbody h-full">
@@ -57,6 +109,13 @@ const ShiftTable = () => {
               Este es el listado de turnos asignados a las casas de la comunidad
               de vecinos.
             </Paragraph>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleNewShift}
+            >
+              Crear Turno
+            </Button>
           </div>
           <div className="ant-filtertabs">
             <div className="antd-pro-pages-dashboard-analysis-style-salesExtra">
@@ -116,7 +175,26 @@ const ShiftTable = () => {
                         }
                       />
                     </td>
-                    <td>{d.options} </td>
+                    <td>
+                      <div className="btn-group">
+                        <Button
+                          onClick={() => handleEditShift(d.id ?? 0)}
+                          type="text"
+                          icon={<EditOutlined />}
+                          style={{
+                            backgroundColor: "#1890ff",
+                            marginRight: "8px",
+                            color: "#fff",
+                          }}
+                        />
+                        <Button
+                          type="text"
+                          onClick={() => confirmDelete(d.id ?? 0)}
+                          icon={<DeleteOutlined />}
+                          style={{ backgroundColor: "#ff4d4f", color: "#fff" }}
+                        />
+                      </div>
+                    </td>
                   </tr>
                 ))
               ) : (
@@ -127,6 +205,16 @@ const ShiftTable = () => {
             </tbody>
           </table>
         </div>
+        <Modal
+          closeIcon={true}
+          title={titleForm()}
+          open={showShiftModal}
+          onOk={() => setShowShiftModal(false)}
+          onCancel={() => setShowShiftModal(false)}
+          footer={null}
+        >
+          <ShiftForm handleSubmit={handleSubmit} editingShift={currentShift} />
+        </Modal>
       </Card>
     </Spin>
   );

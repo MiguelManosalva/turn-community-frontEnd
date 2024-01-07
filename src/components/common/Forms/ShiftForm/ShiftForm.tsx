@@ -5,18 +5,41 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import moment from "moment";
 import "moment/locale/es";
 import { useEffect, useState } from "react";
+import { ShiftDto } from "../../../../models/dto/shiftDto";
 import { House } from "../../../../models/house";
 import { getAllHouses } from "../../../../services/houseService";
-import { createShift } from "../../../../services/shiftService";
+import { createShift, updateShift } from "../../../../services/shiftService";
 
 dayjs.extend(customParseFormat);
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 moment.locale("es");
 
-const ShiftForm = ({ handleSubmit }: { handleSubmit: Function }) => {
+interface HouseFormProps {
+  handleSubmit: Function;
+  editingShift?: ShiftDto | null;
+}
+
+const ShiftForm: React.FC<HouseFormProps> = ({
+  handleSubmit,
+  editingShift,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [houses, setHouses] = useState<House[]>([]);
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (editingShift) {
+      // const fechaInicio = moment(editingShift.fechaInicio, "YYYY-MM-DD");
+      // const fechaFin = moment(editingShift.fechaFin, "YYYY-MM-DD");
+
+      form.setFieldsValue({
+        // fecha: [fechaInicio, fechaFin],
+        house: editingShift.casa.id,
+        estado: editingShift.estado,
+      });
+    }
+  }, [editingShift, form]);
 
   const getHouses = async () => {
     const response = await getAllHouses();
@@ -44,7 +67,10 @@ const ShiftForm = ({ handleSubmit }: { handleSubmit: Function }) => {
       estado: values.estado,
     };
 
-    const result = await createShift(shiftData);
+    const result = editingShift
+      ? await updateShift(editingShift.id ?? 0, shiftData)
+      : await createShift(shiftData);
+
     if (result && "statusCode" in result) {
       notification.error({
         message: "Error en la Creación",
@@ -69,7 +95,12 @@ const ShiftForm = ({ handleSubmit }: { handleSubmit: Function }) => {
 
   return (
     <Spin spinning={isLoading}>
-      <Form name="shiftForm" onFinish={onFinish} className="row-col">
+      <Form
+        name="shiftForm"
+        onFinish={onFinish}
+        className="row-col"
+        form={form}
+      >
         <Form.Item
           name="fecha"
           rules={[

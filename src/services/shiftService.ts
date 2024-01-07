@@ -28,6 +28,31 @@ export const createShift = async (
   }
 };
 
+export const updateShift = async (
+  id: number,
+  shiftData: Partial<ShiftDto>
+): Promise<ShiftDto | ApiResponse> => {
+  try {
+    const uri = `${endpoint}/${id}`;
+    const response = await apiService.patch<ShiftDto>(uri, shiftData);
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status) {
+      return {
+        statusCode: error.response.status,
+        message:
+          error.response.data.message ||
+          "Ocurrió un error al actualizar el turno",
+      };
+    } else {
+      return {
+        statusCode: 500,
+        message: "Error interno del servidor",
+      };
+    }
+  }
+};
+
 export const getShiftList = async (): Promise<ShiftDto[] | ApiResponse> => {
   try {
     const uri = `${endpoint}`;
@@ -40,6 +65,30 @@ export const getShiftList = async (): Promise<ShiftDto[] | ApiResponse> => {
         message:
           error.response.data.message ||
           "Ocurrió un error al obtener los turnos",
+      };
+    } else {
+      return {
+        statusCode: 500,
+        message: "Error interno del servidor",
+      };
+    }
+  }
+};
+
+export const deleteShift = async (
+  id: number
+): Promise<ApiResponse | unknown> => {
+  try {
+    const uri = `${endpoint}/${id}`;
+    const response = await apiService.delete(uri);
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status) {
+      return {
+        statusCode: error.response.status,
+        message:
+          error.response.data.message ||
+          "Ocurrió un error al eliminar el turno",
       };
     } else {
       return {

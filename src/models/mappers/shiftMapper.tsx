@@ -1,5 +1,4 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Progress, Tooltip } from "antd";
+import { Avatar, Progress, Tooltip } from "antd";
 import { formatDate } from "../../utils/date/dateUtil";
 import { ShiftDto } from "../dto/shiftDto";
 
@@ -7,6 +6,7 @@ export const shiftListMapper = (data: ShiftDto[] | null) => {
   if (!data) return [];
   return data?.map((shift) => {
     return {
+      id: shift.id,
       title: `Casa ${shift.casa.numeroCasa + " " + shift.casa.descripcion}`,
       startDate: formatDate(shift.fechaInicio),
       endDate: formatDate(shift.fechaFin),
@@ -28,24 +28,6 @@ export const shiftListMapper = (data: ShiftDto[] | null) => {
               </Tooltip>
             ))}
         </Avatar.Group>
-      ),
-      options: (
-        <div className="btn-group">
-          <Button
-            type="text"
-            icon={<EditOutlined />}
-            style={{
-              backgroundColor: "#1890ff",
-              marginRight: "8px",
-              color: "#fff",
-            }}
-          />
-          <Button
-            type="text"
-            icon={<DeleteOutlined />}
-            style={{ backgroundColor: "#ff4d4f", color: "#fff" }}
-          />
-        </div>
       ),
     };
   });

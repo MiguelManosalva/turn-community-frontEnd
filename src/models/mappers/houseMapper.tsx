@@ -1,11 +1,11 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Tooltip } from "antd";
+import { Avatar, Tooltip } from "antd";
 import { House } from "../house";
 
 export const houseListMapper = (data: House[] | null) => {
   if (!data) return [];
   return data?.map((house) => {
     return {
+      id: house.id,
       title: `Casa ${house.descripcion}`,
       numberHouse: house.numeroCasa,
       member: (
@@ -22,24 +22,6 @@ export const houseListMapper = (data: House[] | null) => {
               </Tooltip>
             ))}
         </Avatar.Group>
-      ),
-      options: (
-        <div className="btn-group">
-          <Button
-            type="text"
-            icon={<EditOutlined />}
-            style={{
-              backgroundColor: "#1890ff",
-              marginRight: "8px",
-              color: "#fff",
-            }}
-          />
-          <Button
-            type="text"
-            icon={<DeleteOutlined />}
-            style={{ backgroundColor: "#ff4d4f", color: "#fff" }}
-          />
-        </div>
       ),
     };
   });
