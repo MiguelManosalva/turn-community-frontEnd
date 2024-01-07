@@ -4,4 +4,5 @@ export interface RegisterDto {
   contrasena: string;
   telefono: string;
   casaId: number;
+  rol?: "vecino" | "administrador";
 }

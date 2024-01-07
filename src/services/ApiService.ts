@@ -1,5 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
+export interface ApiResponse {
+  statusCode: number;
+  message: string;
+}
+
 class ApiService {
   private axiosInstance: AxiosInstance;
 
@@ -8,16 +13,18 @@ class ApiService {
       baseURL,
     });
 
-    // this.axiosInstance.interceptors.request.use(
-    //   (config: AxiosRequestConfig) => {
-    //     const token = "tu_token_bearer_aquí"; // Obtén el token de alguna manera, como desde el localStorage
-    //     if (token) {
-    //       config.headers = config.headers || {};
-    //       config.headers.Authorization = `Bearer ${token}`;
-    //     }
-    //     return config;
-    //   }
-    // );
+    this.axiosInstance.interceptors.request.use(
+      (config: AxiosRequestConfig): any => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          config.headers = config.headers || {};
+          config.headers.Authorization = `Bearer ${token}`;
+        } else {
+          localStorage.removeItem("token");
+        }
+        return config;
+      }
+    );
   }
 
   public get<T>(url: string, config?: AxiosRequestConfig) {

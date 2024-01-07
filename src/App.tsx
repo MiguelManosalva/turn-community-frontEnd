@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import {
   Navigate,
@@ -12,6 +13,8 @@ import Main from "./components/layout/Main/Main";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Login from "./pages/Session/Login/Login";
 import Register from "./pages/Session/Register/Register";
+
+moment.locale("es");
 
 type PrivateRouteProps = {
   children: React.ReactNode;

@@ -14,7 +14,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import signinbg from "../../../assets/images/img-login.png";
 import FooterSession from "../../../components/common/FooterSession/Footer";
-import { LoginDto } from "../../../models/dto/login.dto";
+import { LoginDto } from "../../../models/dto/loginDto";
 import { loginUser } from "../../../services/sessionService";
 
 const { Title } = Typography;

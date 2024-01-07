@@ -1,7 +1,7 @@
 // src/services/HouseService.ts
 
-import { LoginDto, LoginResponse } from "../models/dto/login.dto";
-import { RegisterDto } from "../models/dto/register.dto";
+import { LoginDto, LoginResponse } from "../models/dto/loginDto";
+import { RegisterDto } from "../models/dto/registerDto";
 import { User } from "../models/user";
 import ApiService from "./ApiService";
 

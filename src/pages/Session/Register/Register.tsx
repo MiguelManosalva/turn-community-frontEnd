@@ -12,7 +12,7 @@ import {
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FooterSession from "../../../components/common/FooterSession/Footer";
-import { RegisterDto } from "../../../models/dto/register.dto";
+import { RegisterDto } from "../../../models/dto/registerDto";
 import { House } from "../../../models/house";
 import { getAllHouses } from "../../../services/houseService";
 import { registerUser } from "../../../services/sessionService";
@@ -28,9 +28,12 @@ const Register = () => {
   const [houses, setHouses] = useState<House[]>([]);
 
   const getHouses = async () => {
-    getAllHouses().then((res) => {
-      setHouses(res);
-    });
+    const response = await getAllHouses();
+    if (Array.isArray(response)) {
+      setHouses(response);
+    } else {
+      setHouses([]);
+    }
   };
 
   useMemo(() => {

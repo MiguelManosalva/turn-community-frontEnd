@@ -1,23 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
-  HomeTwoTone,
+  ClockCircleOutlined,
+  HomeOutlined,
   MenuUnfoldOutlined,
   RightOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
 import {
   Button,
   Card,
   Col,
-  Progress,
-  Radio,
+  Modal,
   Row,
+  Spin,
   Timeline,
-  Tooltip,
   Typography,
 } from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
-import { count } from "./data/counts";
+import HouseForm from "../../components/common/Forms/HouseForm/HouseForm";
+import ShiftForm from "../../components/common/Forms/ShiftForm/ShiftForm";
+import UserForm from "../../components/common/Forms/UserForm/UserForm";
+import ShiftTable from "../../components/common/ShiftTable/ShiftTable";
+import { StadisticDto } from "../../models/dto/stadisticsDto";
+import { stadisticsMapper } from "../../models/mappers/stadisticsMapper";
+import { getGeneralStadistics } from "../../services/stadisticsService";
 
 // import ava1 from "../assets/images/logo-shopify.svg";
 // import ava2 from "../assets/images/logo-atlassian.svg";
@@ -34,133 +41,37 @@ import { count } from "./data/counts";
 function Dashboard() {
   const { Title, Text } = Typography;
 
-  const onChange = (e: any): void => {
-    return console.log(`radio checked:${e.target.value}`);
+  const [stadistics, setStadistics] = useState<StadisticDto | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const [isAdmin] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [typeForm, setTypeForm] = useState<string | null>(null);
+
+  const titleForm = () => {
+    if (typeForm === "user") return "Crear Usuario";
+    if (typeForm === "house") return "Crear Casa";
+    if (typeForm === "shift") return "Crear Turno";
+    return "";
   };
 
-  const [reverse, setReverse] = useState(false);
+  const getStadistics = async () => {
+    const result = await getGeneralStadistics();
+    if ("houses" in result) {
+      setStadistics(result);
+    } else {
+      setError(result.message);
+    }
+  };
 
-  const list = [
-    {
-      // img: ava1,
-      Title: "Soft UI Shopify Version",
-      bud: "$14,000",
-      progress: <Progress percent={60} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            {/* <img className="tootip-img" src={team1} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            {/* <img className="tootip-img" src={team2} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Alexander Smith">
-            {/* <img className="tootip-img" src={team3} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Jessica Doe">
-            {/* <img className="tootip-img" src={team4} alt="" /> */}
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      // img: ava2,
-      Title: "Progress Track",
-      bud: "$3,000",
-      progress: <Progress percent={10} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            {/* <img className="tootip-img" src={team1} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            {/* <img className="tootip-img" src={team2} alt="" /> */}
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      // img: ava3,
-      Title: "Fix Platform Errors",
-      bud: "Not Set",
-      progress: <Progress percent={100} size="small" status="active" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            {/* <img className="tootip-img" src={team1} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            {/* <img className="tootip-img" src={team1} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Alexander Smith">
-            {/* <img className="tootip-img" src={team3} alt="" /> */}
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      // img: ava4,
-      Title: "Launch new Mobile App",
-      bud: "$20,600",
-      progress: <Progress percent={100} size="small" status="active" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            {/* <img className="tootip-img" src={team1} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            {/* <img className="tootip-img" src={team2} alt="" /> */}
-          </Tooltip>
-        </div>
-      ),
-    },
-    {
-      // img: ava5,
-      Title: "Add the New Landing Page",
-      bud: "$4,000",
-      progress: <Progress percent={80} size="small" />,
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            {/* <img className="tootip-img" src={team1} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            {/* <img className="tootip-img" src={team2} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Alexander Smith">
-            {/* <img className="tootip-img" src={team3} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Jessica Doe">
-            {/* <img className="tootip-img" src={team4} alt="" /> */}
-          </Tooltip>
-        </div>
-      ),
-    },
+  useEffect(() => {
+    if (!stadistics) getStadistics();
+  }, [stadistics]);
 
-    {
-      // img: ava6,
-      Title: "Redesign Online Store",
-      bud: "$2,000",
-      progress: (
-        <Progress
-          percent={100}
-          size="small"
-          status="exception"
-          format={() => "Cancel"}
-        />
-      ),
-      member: (
-        <div className="avatar-group mt-2">
-          <Tooltip placement="bottom" title="Ryan Tompson">
-            {/* <img className="tootip-img" src={team1} alt="" /> */}
-          </Tooltip>
-          <Tooltip placement="bottom" title="Romina Hadid">
-            {/* <img className="tootip-img" src={team2} alt="" /> */}
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
+  const handleForm = () => {
+    getStadistics();
+    setShowModal(false);
+  };
 
   const timelineList = [
     {
@@ -194,36 +105,100 @@ function Dashboard() {
 
   return (
     <div className="layout-content">
-      <Row className="rowgap-vbox" gutter={[24, 0]}>
-        {count.map((c, index) => (
-          <Col
-            key={index}
-            xs={24}
-            sm={24}
-            md={12}
-            lg={8}
-            xl={8}
-            className="mb-24"
-          >
-            <Card bordered={false} className="criclebox ">
-              <div className="number">
-                <Row align="middle" gutter={[24, 0]}>
-                  <Col xs={18}>
-                    <span>{c.today}</span>
-                    <Title level={3}>
-                      {c.title}
-                      {/* <small className={c.bnb}>{c.persent}</small> */}
-                    </Title>
-                  </Col>
-                  <Col xs={6}>
-                    <div className="icon-box">{c.icon}</div>
-                  </Col>
-                </Row>
-              </div>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      <Spin spinning={!stadistics && !error}>
+        <Row className="rowgap-vbox" gutter={[24, 0]}>
+          {stadisticsMapper(stadistics).map((c, index) => (
+            <Col
+              key={index}
+              xs={24}
+              sm={24}
+              md={12}
+              lg={8}
+              xl={8}
+              className="mb-24"
+            >
+              <Card bordered={false} className="criclebox ">
+                <div className="number">
+                  <Row align="middle" gutter={[24, 0]}>
+                    <Col xs={18}>
+                      <span>{c.today}</span>
+                      <Title level={3}>{c.title}</Title>
+                    </Col>
+                    <Col xs={6}>
+                      <div className="icon-box">{c.icon}</div>
+                    </Col>
+                    {isAdmin && (
+                      <Col xs={24} style={{ textAlign: "center" }}>
+                        {c.type === "user" && (
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              setTypeForm(c.type);
+                              setShowModal(true);
+                            }}
+                          >
+                            <UserAddOutlined className="white-text-button" />{" "}
+                            <span className="white-text-button">
+                              Crear Usuario
+                            </span>
+                          </Button>
+                        )}
+
+                        {c.type === "house" && (
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              setTypeForm(c.type);
+                              setShowModal(true);
+                            }}
+                          >
+                            <HomeOutlined className="white-text-button" />
+                            <span className="white-text-button">
+                              Crear Casa
+                            </span>
+                          </Button>
+                        )}
+
+                        {c.type === "shift" && (
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              setTypeForm(c.type);
+                              setShowModal(true);
+                            }}
+                          >
+                            <ClockCircleOutlined className="white-text-button" />
+                            <span className="white-text-button">
+                              Crear Turno
+                            </span>
+                          </Button>
+                        )}
+                      </Col>
+                    )}
+                  </Row>
+                </div>
+              </Card>
+              <Modal
+                closeIcon={true}
+                title={titleForm()}
+                open={showModal}
+                onOk={() => setShowModal(false)}
+                onCancel={() => setShowModal(false)}
+                footer={null}
+              >
+                {typeForm === "user" && <UserForm handleSubmit={handleForm} />}
+
+                {typeForm === "house" && (
+                  <HouseForm handleSubmit={handleForm} />
+                )}
+                {typeForm === "shift" && (
+                  <ShiftForm handleSubmit={handleForm} />
+                )}
+              </Modal>
+            </Col>
+          ))}
+        </Row>
+      </Spin>
 
       <Row gutter={[24, 0]}>
         <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mb-24">
@@ -286,62 +261,7 @@ function Dashboard() {
 
       <Row gutter={[24, 0]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={16} className="mb-24">
-          <Card bordered={false} className="criclebox cardbody h-full">
-            <div className="project-ant">
-              <div>
-                <Title level={5}>Turnos </Title>
-                <Paragraph className="lastweek">
-                  done this month<span className="blue">40%</span>
-                </Paragraph>
-              </div>
-              <div className="ant-filtertabs">
-                <div className="antd-pro-pages-dashboard-analysis-style-salesExtra">
-                  <Radio.Group onChange={onChange} defaultValue="a">
-                    <Radio.Button value="a">TODOS</Radio.Button>
-                    <Radio.Button value="b">COMPLETADOS</Radio.Button>
-                    <Radio.Button value="c">NO COMPLETADOS</Radio.Button>
-                  </Radio.Group>
-                </div>
-              </div>
-            </div>
-            <div className="ant-list-box table-responsive">
-              <table className="width-100">
-                <thead>
-                  <tr>
-                    <th>CASA RESPONSABLE</th>
-                    <th>ENCARGADOS</th>
-                    <th>FECHA DE INICIO</th>
-                    <th>FECHA DE TERMINO</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {list.map((d, index) => (
-                    <tr key={index}>
-                      <td>
-                        <h6>
-                          <HomeTwoTone
-                            twoToneColor="#52c41a"
-                            className="mr-10"
-                            style={{ fontSize: "24px" }}
-                          />
-                          {d.Title}
-                        </h6>
-                      </td>
-                      <td>{d.member}</td>
-                      <td>
-                        <span className="text-xs font-weight-bold">
-                          {d.bud}{" "}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="percent-progress">{d.progress}</div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Card>
+          <ShiftTable />
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8} className="mb-24">
           <Card bordered={false} className="criclebox h-full">
@@ -354,7 +274,7 @@ function Dashboard() {
               <Timeline
                 pending="Recording..."
                 className="timelinelist"
-                reverse={reverse}
+                reverse={false}
               >
                 {timelineList.map((t, index) => (
                   <Timeline.Item color={t.color} key={index}>
@@ -363,11 +283,7 @@ function Dashboard() {
                   </Timeline.Item>
                 ))}
               </Timeline>
-              <Button
-                type="primary"
-                className="width-100"
-                onClick={() => setReverse(!reverse)}
-              >
+              <Button type="primary" className="width-100" onClick={() => null}>
                 {<MenuUnfoldOutlined />} REVERSE
               </Button>
             </div>
