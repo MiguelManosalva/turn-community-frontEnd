@@ -10,17 +10,16 @@ const Footer: React.FC = () => {
       <Row>
         <Col xs={24} md={12} lg={12}>
           <div className="copyright">
-            © 2021, made with
-            <HeartFilled /> by
+            © 2024, Barrio Unido un proyecto creado con
+            <HeartFilled /> por
             <a
-              href="#pablo"
+              href="#shogun"
               className="font-weight-bold"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Creative Tim
+              Miguel A. Manosalva Iraira
             </a>
-            for a better web.
           </div>
         </Col>
         <Col xs={24} md={12} lg={12}>
