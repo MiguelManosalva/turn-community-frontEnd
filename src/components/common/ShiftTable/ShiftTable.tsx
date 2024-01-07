@@ -78,6 +78,7 @@ const ShiftTable = () => {
                 <th>FECHA DE INICIO</th>
                 <th>FECHA DE TERMINO</th>
                 <th>ESTADO</th>
+                <th>OPCIONES</th>
               </tr>
             </thead>
             <tbody>
@@ -115,6 +116,7 @@ const ShiftTable = () => {
                         }
                       />
                     </td>
+                    <td>{d.options} </td>
                   </tr>
                 ))
               ) : (

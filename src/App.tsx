@@ -11,8 +11,10 @@ import "./assets/styles/theme/main.css";
 import "./assets/styles/theme/responsive.css";
 import Main from "./components/layout/Main/Main";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import House from "./pages/House/House";
 import Login from "./pages/Session/Login/Login";
 import Register from "./pages/Session/Register/Register";
+import Shift from "./pages/Shift/Shift";
 
 moment.locale("es");
 
@@ -27,7 +29,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 
 const PublicRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const token = localStorage.getItem("token");
-  return !token ? <>{children}</> : <Navigate to="/dashboard" />;
+  return !token ? <>{children}</> : <Navigate to="/inicio" />;
 };
 
 function App() {
@@ -59,10 +61,26 @@ function App() {
           }
         />
         <Route
-          path="/dashboard"
+          path="/inicio"
           element={
             <PrivateRoute>
               <Main children={<Dashboard />} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/casas"
+          element={
+            <PrivateRoute>
+              <Main children={<House />} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/turnos"
+          element={
+            <PrivateRoute>
+              <Main children={<Shift />} />
             </PrivateRoute>
           }
         />

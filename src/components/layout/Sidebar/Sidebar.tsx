@@ -156,24 +156,24 @@ const Sidenav = ({ color }: { color: string }) => {
       <hr />
       <Menu theme="light" mode="inline">
         <Menu.Item key="1">
-          <NavLink to="/dashboard">
+          <NavLink to="/inicio">
             <span
               className="icon"
               style={{
-                background: page === "dashboard" ? color : "",
+                background: page === "inicio" ? color : "",
               }}
             >
               {dashboard}
             </span>
-            <span className="label">Dashboard</span>
+            <span className="label">Inicio</span>
           </NavLink>
         </Menu.Item>
         <Menu.Item key="2">
-          <NavLink to="/tables">
+          <NavLink to="/casas">
             <span
               className="icon"
               style={{
-                background: page === "tables" ? color : "",
+                background: page === "casas" ? color : "",
               }}
             >
               {tables}
@@ -182,11 +182,11 @@ const Sidenav = ({ color }: { color: string }) => {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="3">
-          <NavLink to="/billing">
+          <NavLink to="/turnos">
             <span
               className="icon"
               style={{
-                background: page === "billing" ? color : "",
+                background: page === "turnos" ? color : "",
               }}
             >
               {billing}

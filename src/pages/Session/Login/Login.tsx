@@ -47,7 +47,7 @@ const Login: React.FC = () => {
         description: "Usuario registrado con éxito",
         placement: "topRight",
       });
-      navigate("/dashboard");
+      navigate("/inicio");
       localStorage.setItem("token", result.accessToken);
     }
 

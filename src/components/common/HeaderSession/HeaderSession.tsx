@@ -1,11 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Layout, Menu } from "antd";
 import {
   HomeOutlined,
   NotificationOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { Layout, Menu } from "antd";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const { Header } = Layout;
 
@@ -18,7 +18,7 @@ const HeaderSession: React.FC = () => {
       <div className="header-col header-nav">
         <Menu mode="horizontal" defaultSelectedKeys={["1"]}>
           <Menu.Item key="1" icon={<HomeOutlined />}>
-            <Link to="/dashboard">
+            <Link to="/inicio">
               <span>Inicio</span>
             </Link>
           </Menu.Item>

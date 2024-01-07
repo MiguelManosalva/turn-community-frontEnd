@@ -1,28 +1,22 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Avatar, Button, Progress, Tooltip } from "antd";
-import { formatDate } from "../../utils/date/dateUtil";
-import { ShiftDto } from "../dto/shiftDto";
+import { Avatar, Button, Tooltip } from "antd";
+import { House } from "../house";
 
-export const shiftListMapper = (data: ShiftDto[] | null) => {
+export const houseListMapper = (data: House[] | null) => {
   if (!data) return [];
-  return data?.map((shift) => {
+  return data?.map((house) => {
     return {
-      title: `Casa ${shift.casa.numeroCasa + " " + shift.casa.descripcion}`,
-      startDate: formatDate(shift.fechaInicio),
-      endDate: formatDate(shift.fechaFin),
-      status: shift.estado,
-      progress: <Progress percent={60} size="small" />,
+      title: `Casa ${house.descripcion}`,
+      numberHouse: house.numeroCasa,
       member: (
         <Avatar.Group size="large">
-          {shift.casa.usuarios &&
-            shift.casa.usuarios.map((d, index) => (
+          {house.usuarios &&
+            house.usuarios.map((d, index) => (
               <Tooltip
                 placement="bottom"
                 title={`${d.nombre} - Teléfono: ${d.telefono}`}
               >
-                <Avatar
-                  style={{ backgroundColor: colorByStatus(shift.estado) }}
-                >
+                <Avatar style={{ backgroundColor: "#9b59b6" }}>
                   {twoFirstLetters(d.nombre)}
                 </Avatar>
               </Tooltip>
@@ -57,15 +51,4 @@ const twoFirstLetters = (name: string) => {
   const firstLetter = splittedName[0].charAt(0);
   const secondLetter = splittedName.length > 1 ? splittedName[1].charAt(0) : "";
   return firstLetter + secondLetter;
-};
-
-const colorByStatus = (status: string) => {
-  switch (status) {
-    case "completado":
-      return "#87d068";
-    case "pendiente":
-      return "#f1c40f";
-    default:
-      return "#1677ff";
-  }
 };

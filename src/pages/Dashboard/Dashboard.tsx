@@ -16,13 +16,19 @@ import {
   Typography,
 } from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
+import ShiftCalendar from "../../components/common/Calendar/Calendar";
 import HouseForm from "../../components/common/Forms/HouseForm/HouseForm";
 import ShiftForm from "../../components/common/Forms/ShiftForm/ShiftForm";
 import UserForm from "../../components/common/Forms/UserForm/UserForm";
 import ShiftTable from "../../components/common/ShiftTable/ShiftTable";
+import WeatherWidget from "../../components/common/WeatherWidget/WeatherWidget";
 import { StadisticDto } from "../../models/dto/stadisticsDto";
+import { WeatherDto } from "../../models/dto/weatherDto";
 import { stadisticsMapper } from "../../models/mappers/stadisticsMapper";
-import { getGeneralStadistics } from "../../services/stadisticsService";
+import {
+  getGeneralStadistics,
+  getWeather,
+} from "../../services/stadisticsService";
 
 // import ava1 from "../assets/images/logo-shopify.svg";
 // import ava2 from "../assets/images/logo-atlassian.svg";
@@ -40,6 +46,8 @@ function Dashboard() {
   const { Title, Text } = Typography;
 
   const [stadistics, setStadistics] = useState<StadisticDto | null>(null);
+  const [weather, setWeaher] = useState<WeatherDto | null>(null);
+
   const [error, setError] = useState<string | null>(null);
 
   const [isAdmin] = useState<boolean>(true);
@@ -61,6 +69,10 @@ function Dashboard() {
       setError(result.message);
     }
   };
+
+  useEffect(() => {
+    if (!weather) getWeather();
+  }, [weather]);
 
   useEffect(() => {
     if (!stadistics) getStadistics();
@@ -199,6 +211,13 @@ function Dashboard() {
       </Spin>
 
       <Row gutter={[24, 0]}>
+        <Col sm={24} md={8} lg={8} xl={8} className="mb-24">
+          <WeatherWidget />
+        </Col>
+        <Col sm={24} md={16} lg={16} xl={16} className="mb-24">
+          <ShiftCalendar startDate="2024-01-01" endDate="2024-01-07" />
+        </Col>
+
         {/* <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mb-24">
           <Card bordered={false} className="criclebox h-full">
             <Row gutter={[16, 16]}>
