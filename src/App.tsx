@@ -1,4 +1,9 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 // import Home from "./pages/Home/Home";
 import Login from "./pages/Session/Login/Login";
 // import Register from "./pages/Register/Register";
@@ -20,20 +25,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Main children=<Dashboard /> />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
-// <Route path="/dashboard/admin" element={<AdminDashboard />} />
-// <Route path="/dashboard/user" element={<UserDashboard />} />
-// <Route path="/shift-management" element={<ShiftManagement />} />
-// <Route path="/user-profile" element={<UserProfile />} />
-// <Route path="/notifications" element={<Notifications />} />
-// <Route path="/settings" element={<Settings />} />
