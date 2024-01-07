@@ -7,10 +7,7 @@ const WeatherWidget = () => {
   const [weatherData, setWeatherData] = useState<WeatherDto | null>(null);
 
   useEffect(() => {
-    // Aquí iría tu lógica para obtener los datos del clima
-    // Simularemos con datos estáticos para este ejemplo
     const fetchData = async () => {
-      // Reemplaza con la llamada a tu API
       const result: WeatherDto = {
         temperature: 26.95,
         temperatureMin: 25.53,
@@ -39,7 +36,7 @@ const WeatherWidget = () => {
       case "fog":
         return <WiFog size={50} />;
       default:
-        return <WiDaySunny size={50} />; // Ícono por defecto
+        return <WiDaySunny size={50} />;
     }
   };
 
@@ -61,7 +58,7 @@ const WeatherWidget = () => {
   };
 
   return (
-    <Card title="Clima Puente Alto, Chile">
+    <Card title="Clima Puente Alto, Chile" style={{ height: 400 }}>
       {weatherData && (
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={12} md={12} lg={6}>

@@ -215,7 +215,11 @@ function Dashboard() {
           <WeatherWidget />
         </Col>
         <Col sm={24} md={16} lg={16} xl={16} className="mb-24">
-          <ShiftCalendar startDate="2024-01-01" endDate="2024-01-07" />
+          <ShiftCalendar
+            startDate="2024-01-01"
+            endDate="2024-01-07"
+            houseName="Casa prubeas"
+          />
         </Col>
 
         {/* <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mb-24">
