@@ -40,7 +40,7 @@ const ShiftForm = ({ handleSubmit }: { handleSubmit: Function }) => {
     const shiftData = {
       fechaInicio,
       fechaFin,
-      casaId: values.casaId,
+      casaId: values.house,
       estado: values.estado,
     };
 

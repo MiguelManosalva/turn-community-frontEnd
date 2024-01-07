@@ -6,7 +6,7 @@ export const shiftListMapper = (data: ShiftDto[] | null) => {
   if (!data) return [];
   return data?.map((shift) => {
     return {
-      title: `Casa ${shift.descripcion + " " + shift.casaId}`,
+      title: `Casa ${shift.casa.numeroCasa + " " + shift.casa.descripcion}`,
       startDate: formatDate(shift.fechaInicio),
       endDate: formatDate(shift.fechaFin),
       status: shift.estado,

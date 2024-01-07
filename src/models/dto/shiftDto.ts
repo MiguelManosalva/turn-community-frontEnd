@@ -1,9 +1,9 @@
+import { House } from "./../house";
 import { User } from "./../user";
 export interface ShiftDto {
   fechaInicio: Date;
   fechaFin: Date;
-  casaId: number;
-  descripcion: string;
+  casa: House;
   estado: "asignado" | "completado" | "pendiente";
   usuarios?: User[];
 }

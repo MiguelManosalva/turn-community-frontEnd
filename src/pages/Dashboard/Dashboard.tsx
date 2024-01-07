@@ -4,7 +4,6 @@ import {
   ClockCircleOutlined,
   HomeOutlined,
   MenuUnfoldOutlined,
-  RightOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
 import {
@@ -201,7 +200,7 @@ function Dashboard() {
       </Spin>
 
       <Row gutter={[24, 0]}>
-        <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mb-24">
+        {/* <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mb-24">
           <Card bordered={false} className="criclebox h-full">
             <Row gutter={[16, 16]}>
               <Col
@@ -231,14 +230,13 @@ function Dashboard() {
               </Col>
               <Col xs={24} md={12} sm={24} lg={12} xl={10} className="col-img">
                 <div className="ant-cret text-right">
-                  {/* <img src={card} alt="" className="border10" /> */}
                 </div>
               </Col>
             </Row>
           </Card>
-        </Col>
+        </Col> */}
 
-        <Col xs={24} md={12} sm={24} lg={12} xl={10} className="mb-24">
+        {/* <Col xs={24} md={12} sm={24} lg={12} xl={10} className="mb-24">
           <Card bordered={false} className="criclebox card-info-2 h-full">
             <div className="gradent h-full col-content">
               <div className="card-content">
@@ -256,7 +254,7 @@ function Dashboard() {
               </div>
             </div>
           </Card>
-        </Col>
+        </Col> */}
       </Row>
 
       <Row gutter={[24, 0]}>
