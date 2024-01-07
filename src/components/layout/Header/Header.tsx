@@ -1,23 +1,11 @@
 import {
-  BellOutlined,
   ClockCircleOutlined,
   CreditCardOutlined,
-  SearchOutlined,
-  UserOutlined,
   WifiOutlined,
 } from "@ant-design/icons";
-import {
-  Avatar,
-  Badge,
-  Breadcrumb,
-  Col,
-  Dropdown,
-  Input,
-  List,
-  Row,
-} from "antd";
+import { Avatar, Breadcrumb, Col, List, Row } from "antd";
 import React, { useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const data = [
   {
@@ -107,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
         </Col>
-        <Col span={12} md={12} className="header-control">
+        {/* <Col span={12} md={12} className="header-control">
           <Badge size="small" count={4}>
             <Dropdown overlay={menu} trigger={["click"]}>
               <a
@@ -129,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({
             placeholder="Type here..."
             prefix={<SearchOutlined />}
           />
-        </Col>
+        </Col> */}
       </Row>
     </>
   );
