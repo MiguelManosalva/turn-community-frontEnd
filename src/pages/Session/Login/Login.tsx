@@ -18,7 +18,7 @@ import { LoginDto } from "../../../models/dto/login.dto";
 import { loginUser } from "../../../services/sessionService";
 
 const { Title } = Typography;
-const { Footer, Content } = Layout;
+const { Content } = Layout;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -48,6 +48,7 @@ const Login: React.FC = () => {
         placement: "topRight",
       });
       navigate("/dashboard");
+      localStorage.setItem("token", result.accessToken);
     }
 
     setIsLoading(false);

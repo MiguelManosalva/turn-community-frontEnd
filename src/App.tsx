@@ -1,10 +1,10 @@
+import React from "react";
 import {
   Navigate,
   Route,
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
-// import Home from "./pages/Home/Home";
 import "./assets/styles/global.scss";
 import "./assets/styles/theme/main.css";
 import "./assets/styles/theme/responsive.css";
@@ -13,14 +13,56 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Login from "./pages/Session/Login/Login";
 import Register from "./pages/Session/Register/Register";
 
+type PrivateRouteProps = {
+  children: React.ReactNode;
+};
+
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return token ? <>{children}</> : <Navigate to="/login" />;
+};
+
+const PublicRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return !token ? <>{children}</> : <Navigate to="/dashboard" />;
+};
+
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Main children=<Dashboard /> />} />
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Main children={<Dashboard />} />
+            </PrivateRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

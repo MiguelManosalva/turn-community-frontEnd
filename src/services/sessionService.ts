@@ -1,6 +1,6 @@
 // src/services/HouseService.ts
 
-import { LoginDto } from "../models/dto/login.dto";
+import { LoginDto, LoginResponse } from "../models/dto/login.dto";
 import { RegisterDto } from "../models/dto/register.dto";
 import { User } from "../models/user";
 import ApiService from "./ApiService";
@@ -34,10 +34,10 @@ export const registerUser = async (
 
 export const loginUser = async (
   payload: LoginDto
-): Promise<User | { statusCode: number; message: string }> => {
+): Promise<LoginResponse | { statusCode: number; message: string }> => {
   try {
     const uri = `${endpoint}/login`;
-    const response = await apiService.post<User>(uri, payload);
+    const response = await apiService.post<LoginResponse>(uri, payload);
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status) {
